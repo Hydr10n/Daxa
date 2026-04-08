@@ -14,6 +14,19 @@
 #include <atomic>
 #include <mutex>
 
+namespace daxa
+{
+    constexpr auto queue_to_queue_index(daxa::Queue queue) -> u32
+    {
+        u32 offsets[3] = {
+            0,
+            1,
+            1 + DAXA_MAX_COMPUTE_QUEUE_COUNT,
+        };
+        return offsets[static_cast<u32>(queue.type)] + queue.index;
+    }
+}; // namespace daxa
+
 using namespace daxa;
 
 struct SubmitZombie

@@ -1782,7 +1782,7 @@ namespace daxa
                 static constexpr f32 STRUCT_NEST_INDENTATION = 15.0f;
                 static constexpr f32 STRUCT_NEST_MUL = 0.85f;
 
-                static constexpr ImGuiChildFlags NESTED_CHILD_FLAGS = ImGuiChildFlags_Border;
+                static constexpr ImGuiChildFlags NESTED_CHILD_FLAGS = ImGuiChildFlags_Borders;
 
                 std::vector<TgDebugTypeDefinition> & type_defs = state.buffer.tg_debug_struct_definitions;
 

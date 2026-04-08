@@ -4,7 +4,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <set>
 
 #include <utility>
 
@@ -12,6 +11,7 @@
 #include "impl_task_graph_debug.hpp"
 #include "impl_task_graph_ui.hpp"
 #include "impl_resource_viewer.hpp"
+#include "../impl_device.hpp"
 
 namespace daxa
 {

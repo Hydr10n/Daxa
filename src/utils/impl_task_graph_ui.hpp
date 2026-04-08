@@ -2,9 +2,10 @@
 #if DAXA_BUILT_WITH_UTILS_TASK_GRAPH && DAXA_BUILT_WITH_UTILS_IMGUI
 #include <daxa/utils/task_graph_types.hpp>
 #include <daxa/utils/imgui.hpp>
-#include <daxa/utils/imgui.hpp>
 
 #include "impl_resource_viewer.hpp"
+#include "../impl_core.hpp"
+
 #include <set>
 #include <optional>
 #include <filesystem>

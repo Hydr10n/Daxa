@@ -4,6 +4,8 @@
 
 #include "impl_resource_viewer.slang"
 
+#include <unordered_map>
+
 // 1mb
 #define BUFFER_RESOURCE_VIEWER_READBACK_SIZE (1u << 22u)
 
@@ -90,7 +92,7 @@ namespace daxa
             ImageId clone_image = {};
             ImageId destroy_display_image = {}; // mini deletion queue
             ImageId destroy_clone_image = {};   // mini deletion queue
-            void * imgui_image_id = {};
+            ImTextureID imgui_image_id = {};
             union { f32 _f32; i32 _i32; u32 _u32; } min_display_value = { ._u32 = {} };
             union { f32 _f32; i32 _i32; u32 _u32; } max_display_value = { ._u32 = {} };
             i32 rainbow_ints = false;
