@@ -273,7 +273,7 @@ namespace daxa
                     render_recorder.set_scissor(scissor);
 
                     // Draw
-                    auto const image_context = this->image_sampler_pairs.at(std::bit_cast<usize>(pcmd->TextureId));
+                    auto const image_context = this->image_sampler_pairs.at(std::bit_cast<usize>(pcmd->GetTexID()));
                     push.texture0_id = image_context.image_view;
                     push.sampler0_id = image_context.sampler;
 
