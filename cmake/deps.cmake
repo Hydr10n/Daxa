@@ -42,7 +42,7 @@ if (DAXA_ENABLE_UTILS_IMGUI AND NOT TARGET imgui::imgui AND NOT TARGET implot::i
     FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui
-        GIT_TAG        fdc084f532189fda8474079f79e74fa5e3541c9f
+        GIT_TAG        v1.92.7
     )
 
     FetchContent_GetProperties(imgui)
@@ -73,7 +73,7 @@ if (DAXA_ENABLE_UTILS_IMGUI AND NOT TARGET imgui::imgui AND NOT TARGET implot::i
     FetchContent_Declare(
         implot
         GIT_REPOSITORY https://github.com/epezent/implot
-        GIT_TAG        v0.17
+        GIT_TAG        v1.0
         EXCLUDE_FROM_ALL
     )
 

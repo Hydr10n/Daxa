@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
+include(CMakeDependentOption)
+
 option(DAXA_ENABLE_STATIC_ANALYSIS OFF)
 option(DAXA_ENABLE_TESTS "" OFF)
 option(DAXA_ENABLE_TOOLS "" OFF)
