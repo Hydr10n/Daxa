@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <bit>
+#include <daxa/profiling.hpp>
 
 // --- Begin API Functions ---
 
@@ -41,7 +42,10 @@ auto daxa_dvc_create_swapchain(daxa_Device device, daxa_SwapchainInfo const * in
     }
 #endif
 
-    result = ret.recreate_surface();
+    {
+        DAXA_PROFILE_SCOPE("recreate_surface");
+        result = ret.recreate_surface();
+    }
     _DAXA_RETURN_IF_ERROR(result, result);
 
     VkBool32 present_support = VK_FALSE;
@@ -65,21 +69,24 @@ auto daxa_dvc_create_swapchain(daxa_Device device, daxa_SwapchainInfo const * in
     }
 
     // Save supported present modes.
-    u32 present_mode_count = {};
-    result = static_cast<daxa_Result>(vkGetPhysicalDeviceSurfacePresentModesKHR(
-        ret.device->vk_physical_device,
-        ret.vk_surface,
-        &present_mode_count,
-        nullptr));
-    _DAXA_RETURN_IF_ERROR(result, result);
+    {
+        DAXA_PROFILE_SCOPE("query present modes");
+        u32 present_mode_count = {};
+        result = static_cast<daxa_Result>(vkGetPhysicalDeviceSurfacePresentModesKHR(
+            ret.device->vk_physical_device,
+            ret.vk_surface,
+            &present_mode_count,
+            nullptr));
+        _DAXA_RETURN_IF_ERROR(result, result);
 
-    ret.supported_present_modes.resize(present_mode_count);
-    result = static_cast<daxa_Result>(vkGetPhysicalDeviceSurfacePresentModesKHR(
-        device->vk_physical_device,
-        ret.vk_surface,
-        &present_mode_count,
-        r_cast<VkPresentModeKHR *>(ret.supported_present_modes.data())));
-    _DAXA_RETURN_IF_ERROR(result, result);
+        ret.supported_present_modes.resize(present_mode_count);
+        result = static_cast<daxa_Result>(vkGetPhysicalDeviceSurfacePresentModesKHR(
+            device->vk_physical_device,
+            ret.vk_surface,
+            &present_mode_count,
+            r_cast<VkPresentModeKHR *>(ret.supported_present_modes.data())));
+        _DAXA_RETURN_IF_ERROR(result, result);
+    }
 
     ret.vk_surface_format = info->surface_format;
 
@@ -252,6 +259,7 @@ auto daxa_swp_dec_refcnt(daxa_Swapchain self) -> u64
 
 auto daxa_ImplSwapchain::recreate() -> daxa_Result
 {
+    DAXA_PROFILE_SCOPE(__FUNCTION__);
     daxa_Result result = DAXA_RESULT_SUCCESS;
 
     // Check present mode:
@@ -342,11 +350,14 @@ auto daxa_ImplSwapchain::recreate() -> daxa_Result
         .oldSwapchain = VK_NULL_HANDLE,
     };
 
-    result = static_cast<daxa_Result>(vkCreateSwapchainKHR(
-        this->device->vk_device,
-        &swapchain_create_info,
-        nullptr,
-        &this->vk_swapchain));
+    {
+        DAXA_PROFILE_SCOPE("vkCreateSwapchainKHR");
+        result = static_cast<daxa_Result>(vkCreateSwapchainKHR(
+            this->device->vk_device,
+            &swapchain_create_info,
+            nullptr,
+            &this->vk_swapchain));
+    }
     _DAXA_RETURN_IF_ERROR(result, result)
 
     defer

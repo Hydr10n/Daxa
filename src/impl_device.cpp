@@ -8,6 +8,7 @@
 #include "impl_features.hpp"
 #include "impl_swapchain.hpp"
 #include "impl_instance.hpp"
+#include <daxa/profiling.hpp>
 
 /// --- Begin Helpers ---
 
@@ -1474,6 +1475,7 @@ auto daxa_dvc_latest_queue_submit_index(daxa_Device self, daxa_Queue queue, daxa
 
 auto daxa_dvc_wait_on_submit(daxa_Device self, daxa_WaitOnSubmitInfo const * info) -> daxa_Result
 {
+    DAXA_PROFILE_SCOPE(__FUNCTION__);
     if (!self->valid_queue(info->queue))
     {
         _DAXA_RETURN_IF_ERROR(DAXA_RESULT_ERROR_INVALID_QUEUE, DAXA_RESULT_ERROR_INVALID_QUEUE);
@@ -1847,6 +1849,7 @@ auto daxa_dvc_report_supported_present_modes(daxa_Device device, daxa_NativeWind
 
 auto daxa_dvc_report_supported_image_formats(daxa_Device device, daxa_NativeWindowInfo native_window, uint32_t * out_format_count, VkSurfaceFormatKHR * out_formats) -> daxa_Result
 {
+    DAXA_PROFILE_SCOPE(__FUNCTION__);
     if (out_format_count == nullptr)
     {
         _DAXA_RETURN_IF_ERROR(DAXA_RESULT_ERROR_INVALID_POINTER_PARAMETER, DAXA_RESULT_ERROR_INVALID_POINTER_PARAMETER);
@@ -1968,6 +1971,7 @@ auto daxa_dvc_dec_refcnt(daxa_Device self) -> u64
 
 auto daxa_ImplDevice::create_2(daxa_Instance instance, daxa_DeviceInfo2 const & info, ImplPhysicalDevice const & physical_device, daxa_DeviceProperties const & properties, daxa_Device out_device) -> daxa_Result
 {
+    DAXA_PROFILE_SCOPE(__FUNCTION__);
     using namespace daxa;
     daxa_Result result = {};
 
@@ -2094,7 +2098,10 @@ auto daxa_ImplDevice::create_2(daxa_Instance instance, daxa_DeviceInfo2 const & 
         .ppEnabledExtensionNames = physical_device.extensions.extension_name_list,
         .pEnabledFeatures = nullptr,
     };
-    result = static_cast<daxa_Result>(vkCreateDevice(self->vk_physical_device, &device_ci, nullptr, &self->vk_device));
+    {
+        DAXA_PROFILE_SCOPE("vkCreateDevice");
+        result = static_cast<daxa_Result>(vkCreateDevice(self->vk_physical_device, &device_ci, nullptr, &self->vk_device));
+    }
     _DAXA_RETURN_IF_ERROR(result, result)
     defer
     {
@@ -2613,8 +2620,11 @@ auto daxa_ImplDevice::create_2(daxa_Instance instance, daxa_DeviceInfo2 const & 
         .signalSemaphoreCount = {},
         .pSignalSemaphores = {},
     };
-    result = static_cast<daxa_Result>(vkQueueSubmit(self->get_queue(DAXA_QUEUE_MAIN).vk_queue, 1, &init_submit, {}));
-    _DAXA_RETURN_IF_ERROR(result, DAXA_RESULT_FAILED_TO_SUBMIT_DEVICE_INIT_COMMANDS)
+    {
+        DAXA_PROFILE_SCOPE("vkQueueSubmit");
+        result = static_cast<daxa_Result>(vkQueueSubmit(self->get_queue(DAXA_QUEUE_MAIN).vk_queue, 1, &init_submit, {}));
+        _DAXA_RETURN_IF_ERROR(result, DAXA_RESULT_FAILED_TO_SUBMIT_DEVICE_INIT_COMMANDS)
+    }
 
     // Wait for commands in from the init cmd list to complete.
     result = static_cast<daxa_Result>(vkDeviceWaitIdle(self->vk_device));
