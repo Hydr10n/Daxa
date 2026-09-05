@@ -43,7 +43,7 @@ namespace daxa
         EXCLUSIVE
     };
 
-    auto queue_to_queue_index(daxa::Queue queue) -> u32
+    inline auto queue_to_queue_index(daxa::Queue queue) -> u32
     {
         u32 offsets[3] = {
             0,
@@ -53,7 +53,7 @@ namespace daxa
         return offsets[static_cast<u32>(queue.type)] + queue.index;
     }
 
-    auto queue_index_to_queue(u32 flat_index) -> daxa::Queue
+    inline auto queue_index_to_queue(u32 flat_index) -> daxa::Queue
     {
         daxa::Queue queues[] = {
             daxa::QUEUE_MAIN,
@@ -67,12 +67,12 @@ namespace daxa
         return queues[flat_index];
     }
 
-    auto queue_bits_to_first_queue_index(u32 queue_bits) -> u32
+    inline auto queue_bits_to_first_queue_index(u32 queue_bits) -> u32
     {
         return 31u - static_cast<u32>(std::countl_zero(queue_bits));
     }
 
-    auto queue_index_to_queue_bit(u32 queue_index) -> u32
+    inline auto queue_index_to_queue_bit(u32 queue_index) -> u32
     {
         return 1u << queue_index;
     }

@@ -2,6 +2,7 @@
 #if DAXA_BUILT_WITH_UTILS_TASK_GRAPH && DAXA_BUILT_WITH_UTILS_IMGUI
 #include <daxa/utils/task_graph_types.hpp>
 
+#include "../impl_core.hpp"
 #include "impl_resource_viewer.slang"
 
 // 1mb
