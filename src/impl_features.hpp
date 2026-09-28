@@ -67,6 +67,9 @@ namespace daxa
             physical_device_present_wait_khr,
             physical_device_calibrated_timestamps_khr,
             physical_device_calibrated_timestamps_ext,
+            physical_device_push_descriptor_khr,
+            physical_device_binary_import_nvx,
+            physical_device_image_view_handle_nvx,
             COUNT
         };
         constexpr static std::array<char const *, COUNT> extension_names = {
@@ -94,6 +97,9 @@ namespace daxa
             VK_KHR_PRESENT_WAIT_EXTENSION_NAME,
             VK_KHR_CALIBRATED_TIMESTAMPS_EXTENSION_NAME,
             VK_EXT_CALIBRATED_TIMESTAMPS_EXTENSION_NAME,
+            VK_KHR_PUSH_DESCRIPTOR_EXTENSION_NAME,
+            VK_NVX_BINARY_IMPORT_EXTENSION_NAME,
+            VK_NVX_IMAGE_VIEW_HANDLE_EXTENSION_NAME,
         };
         char const * extension_name_list[COUNT] = {};
         u32 extension_name_list_size = {};
